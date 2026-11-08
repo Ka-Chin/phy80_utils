@@ -1,0 +1,3 @@
+(("ver" 1) (:name . "PHY80") (:main-branch . "main") (:src)
+ (:src-exclude) (:include) (:define) (:build-args) (:env) (:path)
+ (:local) (:capture-tags) (:tag . eglot))

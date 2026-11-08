@@ -1,0 +1,32 @@
+[project]
+name = "phy80-utils"
+version = "0.1.0"
+description = "Phy80 Utilities"
+readme = "README.md"
+authors = [
+    { name = "friday chen", email = "fridaychen@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.5.4",
+    "openpyxl>=3.1.5",
+    "pydantic>=2.14.3",
+    "pyserial>=3.5",
+    "pytest>=9.2.0",
+    "pyyaml>=6.0.3",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
+max-complexity = 12
+
+[tool.pyright]
+reportUnusedCallResult = "none"
+
+# [build-system]
+# requires = ["uv_build>=0.13.6,<0.14.0"]
+# build-backend = "uv_build"
