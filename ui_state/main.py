@@ -125,9 +125,9 @@ def generate_func_def(out: t.TextIO, func_name: str, file_content: str) -> None:
 
 def generate_trans(current: State, trans: StateTransmit) -> str:
     return (
-        f"{{ UI_STATE({current.m1}, {current.m2}, {current.m3}, {current.m4}), "
-        + f"KEY_MODE_LONG, "
-        + f"UI_STATE({trans.next_state.m1}, {trans.next_state.m2}, {trans.next_state.m3}, {trans.next_state.m4}), {func_name(current, trans)} }},\n"
+        f"{{ UI_STATE({current.m1:2}, {current.m2:2}, {current.m3:2}, {current.m4:2}), "
+        + f"KEY_{trans.key.upper():9}, "
+        + f"UI_STATE({trans.next_state.m1:2}, {trans.next_state.m2:2}, {trans.next_state.m3:2}, {trans.next_state.m4:2}), {func_name(current, trans)} }},\n"
     )
 
 
@@ -191,7 +191,7 @@ def parse_excel(excel: str) -> list[StateTransmitDef]:
                 State(x.m1, x.m2, x.m3, x.m4),
                 [
                     StateTransmit(
-                        "long_mode",
+                        "mode_long",
                         State(
                             x.long_mode_m1,
                             x.long_mode_m2,
@@ -200,7 +200,7 @@ def parse_excel(excel: str) -> list[StateTransmitDef]:
                         ),
                     ),
                     StateTransmit(
-                        "short_mode",
+                        "mode",
                         State(
                             x.short_mode_m1,
                             x.short_mode_m2,
@@ -251,6 +251,8 @@ def generate_ui_state_def(excel: str, input: str, output: str) -> None:
         out.write(f"    // {x.mode} -- {x.state}\n")
         for y in x.transmits:
             out.write("    " + generate_trans(x.current, y))
+
+    out.write("    { UI_STATE( 255, 255, 255, 255), },\n")
 
     out.write("};\n")
     out.write("/* clang-format on */\n\n")
