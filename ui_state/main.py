@@ -1,5 +1,6 @@
 import argparse
 import re
+import sys
 import typing as t
 from pathlib import Path
 
@@ -181,6 +182,18 @@ def parse_excel(excel: str) -> list[StateTransmitDef]:
         StateTransmitRaw, template.get_table("state_transmit_def", width=41)
     )
 
+    last_state = 0
+    for x in data:
+        state = x.m1 << 24 | x.m2 << 16 | x.m3 << 8 | x.m4
+
+        if state < last_state:
+            print(
+                f"State out of order: {x.mode} | {x.m1},{x.m2},{x.m3},{x.m4} | {x.state}"
+            )
+            sys.exit(1)
+
+        last_state = state
+
     defs: list[StateTransmitDef] = []
 
     for x in data:
@@ -252,6 +265,7 @@ def generate_ui_state_def(excel: str, input: str, output: str) -> None:
         for y in x.transmits:
             out.write("    " + generate_trans(x.current, y))
 
+    out.write(f"    // Sentinel\n")
     out.write("    { UI_STATE( 255, 255, 255, 255), },\n")
 
     out.write("};\n")
