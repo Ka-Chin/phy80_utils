@@ -9,7 +9,7 @@ lint:
 	@basedpyright .
 
 run:
-	@uv run ui_state/main.py -e resource/キー操作によるモード管理仕様v0.0.2.xlsx -i output/ui_state.c -o output/ui_state.c
+	@uv run modbot/main.py
 
 test:
 	@uv run pytest test/*.py
