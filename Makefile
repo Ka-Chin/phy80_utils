@@ -1,5 +1,7 @@
 .PHONY: check debug lint run test
 
+default: run
+
 check: lint test
 
 debug:

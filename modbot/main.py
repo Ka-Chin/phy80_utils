@@ -1,41 +1,48 @@
 import asyncio
 import sys
 
+from pymodbus.server import ModbusTcpServer
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
                                QVBoxLayout, QWidget)
 from qasync import QEventLoop, asyncSlot
 
+from modbot.gd80 import register_map
+from modbot.moddev import create_modbus_dev
+
 
 class Application:
     def __init__(self):
-        self.servers = []
+        self.servers: list[ModbusTcpServer] = []
 
     async def start(self):
         print("Starting Modbus servers...")
 
-        # Start your Modbus server tasks here
-        await asyncio.sleep(0.1)
+        server = create_modbus_dev("10.1.2.2", 5020, register_map)
+
+        self.servers.append(server)
+
+        await server.serve_forever(background=True)
 
     async def stop(self):
         print("Stopping Modbus servers...")
 
-        # Stop your Modbus servers here
-        await asyncio.sleep(0.1)
+        for x in self.servers:
+            await x.shutdown()
 
 
 class MainWindow(QMainWindow):
 
-    def __init__(self, app_logic):
+    def __init__(self, app_logic: Application):
         super().__init__()
 
-        self.app_logic = app_logic
+        self.app_logic: Application = app_logic
 
         self.setWindowTitle("Modbus Simulator")
 
-        self.status = QLabel("Stopped")
+        self.status: QLabel = QLabel("Stopped")
 
-        self.start_button = QPushButton("Start")
-        self.stop_button = QPushButton("Stop")
+        self.start_button: QPushButton = QPushButton("Start")
+        self.stop_button: QPushButton = QPushButton("Stop")
 
         layout = QVBoxLayout()
         layout.addWidget(self.status)
@@ -60,7 +67,7 @@ class MainWindow(QMainWindow):
         self.status.setText("Stopped")
 
 
-async def main(app):
+async def main(_app):
     app_logic = Application()
     window = MainWindow(app_logic)
 
