@@ -16,3 +16,4 @@ setup.cfg
 stopped_by_user
 site/
 .python-version
+typings/

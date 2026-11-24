@@ -11,7 +11,7 @@ lint:
 	@basedpyright .
 
 run:
-	@uv run modbot/main.py
+	@uv run python -m modbot.main
 
 test:
 	@uv run pytest test/*.py
