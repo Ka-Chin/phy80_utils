@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
                                QVBoxLayout, QWidget)
 from qasync import QEventLoop, asyncSlot
 
-from modbot.gd80 import register_map as gd80_register_map
+from modbot.gd81 import register_map as gd81_register_map
 from modbot.moddev import create_modbus_dev
 
 
@@ -17,7 +17,7 @@ class Application:
     async def start(self):
         print("Starting Modbus servers...")
 
-        server = create_modbus_dev("10.1.2.2", 5020, gd80_register_map)
+        server = create_modbus_dev("10.1.2.2", 5020, gd81_register_map)
 
         self.servers.append(server)
 
