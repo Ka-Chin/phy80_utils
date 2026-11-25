@@ -17,7 +17,7 @@ class Application:
     async def start(self):
         print("Starting Modbus servers...")
 
-        server = create_modbus_dev("10.1.2.2", 5020, gd81_register_map)
+        server = create_modbus_dev("0.0.0.0", 5020, gd81_register_map)
 
         self.servers.append(server)
 
